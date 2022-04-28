@@ -1,8 +1,9 @@
 library(shiny)
-library(semantic.dashboard)
-library(ggplot2)
-library(DBI)
-library(dplyr)
+library(semantic.dashboard,lib.loc = "lib")
+library(ggplot2,lib.loc = "lib")
+library(DBI,lib.loc = "lib")
+library(RSQLite,lib.loc = "lib")
+library(dplyr,lib.loc = "lib")
 
 source(paste0(getwd(),"/uiComponent/body.R"))
 source(paste0(getwd(),"/uiComponent/header.R"))
