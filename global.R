@@ -1,8 +1,6 @@
 library(shiny)
-library(semantic.dashboard,lib.loc = "lib")
-library(ggplot2,lib.loc = "lib")
-library(DBI,lib.loc = "lib")
-library(RSQLite,lib.loc = "lib")
+library(semantic.dashboard)
+library(ggplot2)
 library(dplyr,lib.loc = "lib")
 
 source(paste0(getwd(),"/uiComponent/body.R"))
@@ -10,9 +8,9 @@ source(paste0(getwd(),"/uiComponent/header.R"))
 source(paste0(getwd(),"/uiComponent/sidebar.R"))
 
 
-mydb <- dbConnect(RSQLite::SQLite(),'my-db.sqlite')
-rawdf <- DBI::dbGetQuery(conn = mydb,statement = 'Select * from cartable')
-recommendation <- DBI::dbGetQuery(conn = mydb,statement = 'Select * from recom1')
+
+rawdf <- read.csv("emm.csv")
+recommendation <- read.csv("recommd.csv")
 transmissionWiseEmission <- rawdf %>%
   group_by(manufacturer,
            transmission) %>%
