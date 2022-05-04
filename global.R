@@ -1,7 +1,7 @@
 library(shiny)
 library(semantic.dashboard)
 library(ggplot2)
-library(dplyr,lib.loc = "lib")
+library(dplyr)
 
 source(paste0(getwd(),"/uiComponent/body.R"))
 source(paste0(getwd(),"/uiComponent/header.R"))
@@ -14,18 +14,10 @@ recommendation <- read.csv("recommd.csv")
 
 transmissionWiseEmission <- rawdf %>%
   group_by(manufacturer,
-           transmission) %>%
+           fuel) %>%
   summarise(n = n(),
-            totalCo2PerKm = sum(co2_emissions_gPERkm),
-            avgCo2PerKm = mean(co2_emissions_gPERkm)) %>% 
-  dplyr::arrange(desc(totalCo2PerKm),
-                 .group_by = T)
-
-brandWiseEmission <- rawdf %>%
-  group_by(manufacturer) %>%
-  summarise(n = n(),
-            totalCo2PerKm = sum(co2_emissions_gPERkm),
-            avgCo2PerKm = mean(co2_emissions_gPERkm)) %>% 
+            totalCo2PerKm = sum(co2_emissions_gPERkm)/1000,
+            avgCo2PerKm = mean(co2_emissions_gPERkm)/1000) %>% 
   dplyr::arrange(desc(totalCo2PerKm),
                  .group_by = T)
 
@@ -33,7 +25,7 @@ brandWiseEmission <- rawdf %>%
 engineSizeWiseEmission <- rawdf %>%
   group_by(engine_size_cm3) %>%
   summarise(n = n(),
-            totalCo2PerKm = sum(co2_emissions_gPERkm),
-            avgCo2PerKm = mean(co2_emissions_gPERkm)) %>% 
+            totalCo2PerKm = sum(co2_emissions_gPERkm)/1000,
+            avgCo2PerKm = mean(co2_emissions_gPERkm)/1000) %>% 
   dplyr::arrange(desc(totalCo2PerKm),
                  .group_by = T)
