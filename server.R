@@ -6,15 +6,13 @@ shinyServer(function(input, output) {
     #some data manipulation to derive the values of KPI boxes
     
     totalEmission <- sum(transmissionWiseEmission$totalCo2PerKm)
-    sales.account <- recommendation %>% group_by(Account) %>%
-        summarise(value = sum(Revenue)) %>% filter(value == max(value))
-    prof.prod <- recommendation %>% group_by(Product) %>%
-        summarise(value = sum(Revenue)) %>% filter(value == max(value))
+    sales.account <- brandWiseEmission[1,]
+    prof.prod <- engineSizeWiseEmission[1,]
     #creating the valueBoxOutput content
     output$value1 <- semantic.dashboard::render_value_box({
         semantic.dashboard::value_box(
-            value = formatC(sales.account$value, format="d", big.mark=','),
-            subtitle = paste('Top Account:', sales.account$Account),
+            value = formatC(sales.account$totalCo2PerKm, format="d", big.mark=','),
+            subtitle = paste('Top Emission(gm/km) Manufacturer:', sales.account$manufacturer),
             icon = icon("bar chart"),
             color = "purple",
             width = 5)
@@ -22,28 +20,28 @@ shinyServer(function(input, output) {
     output$value2 <- semantic.dashboard::render_value_box({
         semantic.dashboard::value_box(
             value = formatC(totalEmission, format = "d", big.mark = ','),
-            subtitle = 'Total Emission',
+            subtitle = 'Total Emission(gm/km)',
             icon = icon("line chart"),
             color = "green",
             width = 5)
     })
     output$value3 <- semantic.dashboard::render_value_box({
         semantic.dashboard::value_box(
-            value = formatC(prof.prod$value, format = "d", big.mark = ','),
-            subtitle = paste('Top Product:', prof.prod$Product),
+            value = formatC(prof.prod$totalCo2PerKm, format = "d", big.mark = ','),
+            subtitle = paste('Top Emission(gm/km) Engine Size(cm3):', prof.prod$engine_size_cm3),
             icon = icon("bar chart"),
             color = "blue",
             width = 5)
     })
     #creating the plotOutput content
     output$revenuebyPrd <- renderPlot({
-        ggplot(data = recommendation,
-               aes( x= Product, y = Revenue, fill = factor(Region))) +
+        ggplot(data = data.frame(transmissionWiseEmission,stringsAsFactors = F),
+               aes( x= manufacturer, y = totalCo2PerKm, fill = factor(transmission))) +
             scale_fill_manual(values = as.vector(semantic_palette)) +
-            geom_bar(position = "dodge", stat = "identity") + ylab("Revenue (in Euros)") +
-            xlab("Product") + theme(legend.position="bottom",
-                                    plot.title = element_text(size = 15, face = "bold")) +
-            ggtitle("Revenue by Product") + labs(fill = "Region")
+            geom_bar(position = "dodge", stat = "identity") + ylab(" (Emission in gm/Km)") +
+            xlab("Manufacturer") + theme(legend.position="bottom",
+                                    plot.title = element_text(size = 42, face = "bold")) +
+            ggtitle("Emission by Manufacturer") + labs(fill = "Transmission Type")
     })
     output$revenuebyRegion <- renderPlot({
         ggplot(data = recommendation,
