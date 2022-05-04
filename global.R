@@ -11,9 +11,27 @@ source(paste0(getwd(),"/uiComponent/sidebar.R"))
 
 rawdf <- read.csv("emm.csv")
 recommendation <- read.csv("recommd.csv")
+
 transmissionWiseEmission <- rawdf %>%
   group_by(manufacturer,
            transmission) %>%
+  summarise(n = n(),
+            totalCo2PerKm = sum(co2_emissions_gPERkm),
+            avgCo2PerKm = mean(co2_emissions_gPERkm)) %>% 
+  dplyr::arrange(desc(totalCo2PerKm),
+                 .group_by = T)
+
+brandWiseEmission <- rawdf %>%
+  group_by(manufacturer) %>%
+  summarise(n = n(),
+            totalCo2PerKm = sum(co2_emissions_gPERkm),
+            avgCo2PerKm = mean(co2_emissions_gPERkm)) %>% 
+  dplyr::arrange(desc(totalCo2PerKm),
+                 .group_by = T)
+
+
+engineSizeWiseEmission <- rawdf %>%
+  group_by(engine_size_cm3) %>%
   summarise(n = n(),
             totalCo2PerKm = sum(co2_emissions_gPERkm),
             avgCo2PerKm = mean(co2_emissions_gPERkm)) %>% 
