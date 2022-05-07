@@ -14,7 +14,7 @@ recommendation <- read.csv("recommd.csv")
 
 transmissionWiseEmission <- rawdf %>%
   group_by(manufacturer,
-           fuel) %>%
+           model) %>%
   summarise(n = n(),
             totalCo2PerKm = sum(co2_emissions_gPERkm)/1000,
             avgCo2PerKm = mean(co2_emissions_gPERkm)/1000) %>% 
@@ -23,7 +23,8 @@ transmissionWiseEmission <- rawdf %>%
 
 
 engineSizeWiseEmission <- rawdf %>%
-  group_by(engine_size_cm3) %>%
+  group_by(manufacturer,
+           fuel) %>%
   summarise(n = n(),
             totalCo2PerKm = sum(co2_emissions_gPERkm)/1000,
             avgCo2PerKm = mean(co2_emissions_gPERkm)/1000) %>% 

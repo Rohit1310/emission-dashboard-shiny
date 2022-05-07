@@ -1,6 +1,7 @@
 proxy:
   title: Shiny Proxy POC
   port: 8080
+  hide-navbar: true
   container-wait-time: 40000
   authentication: none
   docker:

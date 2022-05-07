@@ -23,6 +23,7 @@ RUN R -e "install.packages(c('shiny',\
 'shinyjs',\
 'semantic.dashboard',\
 'ggplot2',\
+'dplyr',\
 repos='https://cloud.r-project.org/'))"
 
 

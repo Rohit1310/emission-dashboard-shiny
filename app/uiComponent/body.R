@@ -6,7 +6,7 @@ frow1 <- fluidRow(
 
 frow2 <- fluidRow(
   semantic.dashboard::box(
-    title = "Revenue per Account",
+    title = "Top 10 Emission",
     color = "blue",
     ribbon = TRUE,   
     collapsible = TRUE,    
@@ -14,7 +14,7 @@ frow2 <- fluidRow(
     plotOutput("revenuebyPrd", height = "300px")
   ),
   semantic.dashboard::box(
-    title = "Revenue per Product",
+    title = "Top 10 Emission",
     color = "blue",
     ribbon = TRUE,
     collapsible = TRUE,
