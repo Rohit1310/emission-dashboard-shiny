@@ -36,28 +36,24 @@ shinyServer(function(input, output) {
     #creating the plotOutput content
     output$revenuebyPrd <- renderPlot({
         ggplot(data = data.frame(head(transmissionWiseEmission,10),stringsAsFactors = F) %>% ungroup(),
-               aes( x= manufacturer, y = totalCo2PerKm, fill = factor(fuel))) +
+               aes( x= manufacturer, y = totalCo2PerKm, fill = factor(model))) +
             scale_fill_manual(values = as.vector(semantic_palette)) +
             geom_bar(position = "dodge", stat = "identity") + ylab(" (Emission in kg/km)") +
             xlab("Manufacturer") + theme(legend.position="bottom",
                                     plot.title = element_text(size = 15, face = "bold"),
                                     axis.text.x = element_text(angle = 90)) +
-            ggtitle("Top 10 Emission by Manufacturer") +
-            labs(fill = "Fuel")
+            ggtitle("Emission by Manufacturer") +
+            labs(fill = "Model")
     })
     output$revenuebyRegion <- renderPlot({
-        ggplot(data = recommendation,
-               aes(x = Account, y = Revenue, fill = factor(Region))) +
+        ggplot(data = data.frame(head(engineSizeWiseEmission,10),stringsAsFactors = F) %>% ungroup(),
+               aes(x = manufacturer, y = totalCo2PerKm, fill = factor(fuel))) +
             scale_fill_manual(values = as.vector(semantic_palette)) +
-            geom_bar(position = "dodge", stat = "identity") + ylab("Revenue (in Euros)") +
+            geom_bar(position = "dodge", stat = "identity") + ylab("Emission in kg/km") +
             xlab("Account") + theme(legend.position="bottom",
-                                    plot.title = element_text(size = 15, face = "bold")) +
-            ggtitle("Revenue by Region") + labs(fill = "Region")
+                                    plot.title = element_text(size = 15, face = "bold"),
+                                    axis.text.x = element_text(angle = 90)) +
+            ggtitle("Emission by Manufacturer") + labs(fill = "Fuel Type")
     })
     
-    output$dropdown <- semantic.dashboard::render_dropdown_menu({
-        semantic.dashboard::dropdown_menu(messageItem("User", "Test message", color = "teal", style = "min-width: 200px"),
-                     messageItem("Users", "Test message", color = "teal", icon = "users"),
-                     messageItem("See this", "Another test", icon = "warning", color = "red"))
-    })
 })
